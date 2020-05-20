@@ -4,6 +4,7 @@ rootProject.name = 'praktikum.webeng'
 // include subprojects
 include 'helloJava'
 include 'helloServlet'
+include 'webeng02'
 
 // to create new subproject just add another 
 // include '<PROJECT_NAME>'
