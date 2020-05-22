@@ -14,7 +14,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String usernameLabel = "username";
         String username = request.getParameter(usernameLabel);
-        if (username.isEmpty()){
+        if (username == null || username.isEmpty()) {
             response.sendRedirect("401.html");
         } else {
             request.getSession(true).setAttribute(usernameLabel, username);
