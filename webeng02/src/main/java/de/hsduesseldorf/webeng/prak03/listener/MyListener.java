@@ -13,14 +13,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MyListener implements ServletContextListener,
                                    HttpSessionListener, HttpSessionAttributeListener {
 
-    private final AtomicInteger activeSessions = new AtomicInteger();
+    private static final AtomicInteger ACTIVE_SESSIONS = new AtomicInteger();
 
     // Public constructor is required by servlet spec
     public MyListener() {
     }
 
-    public int getTotalActiveSession() {
-        return activeSessions.get();
+    public static int getTotalActiveSession() {
+        return ACTIVE_SESSIONS.get();
     }
 
     // -------------------------------------------------------
@@ -44,15 +44,15 @@ public class MyListener implements ServletContextListener,
     // HttpSessionListener implementation
     // -------------------------------------------------------
     public void sessionCreated(HttpSessionEvent sessionEvent) {
-        activeSessions.incrementAndGet();
+        ACTIVE_SESSIONS.incrementAndGet();
         System.out.println("Session Created: " + sessionEvent.getSession().getId());
-        System.out.println("Total Sessions: " + activeSessions.get());
+        System.out.println("Total Sessions: " + ACTIVE_SESSIONS.get());
     }
 
     public void sessionDestroyed(HttpSessionEvent sessionEvent) {
-        activeSessions.decrementAndGet();
+        ACTIVE_SESSIONS.decrementAndGet();
         System.out.println("Session Destroyed: " + sessionEvent.getSession().getId());
-        System.out.println("Total Sessions: " + activeSessions.get());
+        System.out.println("Total Sessions: " + ACTIVE_SESSIONS.get());
     }
 
     // -------------------------------------------------------
