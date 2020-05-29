@@ -3,19 +3,19 @@ package de.hsduesseldorf.webengshop;
 import java.util.UUID;
 
 public class Article {
-    private final UUID uuid;
+    private final String uuid;
     private String name;
-    private float preis;
-    private int quantity;
+    private float price;
+    private int stock;
 
-    public Article(final UUID uuid, final String name, final float preis, final int quantity) {
+    public Article(final String uuid, final String name, final float price, final int stock) {
         this.uuid = uuid;
         this.name = name;
-        this.preis = preis;
-        this.quantity = quantity;
+        this.price = price;
+        this.stock = stock;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
@@ -27,19 +27,19 @@ public class Article {
         this.name = name;
     }
 
-    public float getPreis() {
-        return preis;
+    public float getPrice() {
+        return price;
     }
 
-    public void setPreis(final float preis) {
-        this.preis = preis;
+    public void setPrice(final float price) {
+        this.price = price;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getStock() {
+        return stock;
     }
 
-    public void setQuantity(final int quantity) {
-        this.quantity = quantity;
+    public void setStock(final int stock) {
+        this.stock = stock;
     }
 }
