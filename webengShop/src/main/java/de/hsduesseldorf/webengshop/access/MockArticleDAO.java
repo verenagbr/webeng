@@ -39,7 +39,7 @@ public class MockArticleDAO {
     public void removeArticle(String uuid) {
         Article articleToRemove = getArticle(uuid);
         int stock = articleToRemove.getStock();
-        articleToRemove.setStock(stock - 1);
+        articleToRemove.setStock(stock == 0 ? 0 : stock - 1);
     }
 
     /**

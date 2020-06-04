@@ -25,10 +25,8 @@ public class ArticleManager {
     public void updateStock(Article article, Boolean increaseStock) {
         if (increaseStock) {
             articleDB.addArticle(article.getUuid());
-            article.setStock(article.getStock() + 1);
         } else {
             articleDB.removeArticle(article.getUuid());
-            article.setStock(article.getStock() - 1);
         }
     }
 }

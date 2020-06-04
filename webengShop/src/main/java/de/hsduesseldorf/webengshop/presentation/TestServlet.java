@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,47 +23,23 @@ import java.util.List;
 @WebServlet(name = "TestServlet", urlPatterns = {"/TestServlet"})
 public class TestServlet extends HttpServlet {
 
-    private ShoppingManager shoppingManager = new ShoppingManager();
-    private ArticleManager articleManager = new ArticleManager();
+    private final ShoppingManager shoppingManager = new ShoppingManager();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        // TODO: Not implemented yet
     }
-
-    public void generateHead(HttpServletRequest request, HttpServletResponse response) {
-        RequestDispatcher rd = request.getRequestDispatcher("header.html");
-
-        try {
-            rd.include(request, response);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void generateFoot(HttpServletRequest request, HttpServletResponse response) {
-        RequestDispatcher rd = request.getRequestDispatcher("footer.html");
-
-        try {
-            rd.include(request, response);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         PrintWriter out = response.getWriter();
-        generateHead(request, response);
 
         out.println("<h1>Praktikum 4 - Shopsystem mit 3-Schicht-Architektur</h1></br></br></br>");
 
         out.println("           <b>Artikelliste ausgeben.</b>");
         generateArticleList(out);
 
-        out.println("           </br></br><b>F&uumlge 3 Artikel zum Warenkorb hinzu.</b></br>");
+        out.println("           </br></br><b>F&uuml;ge 3 Artikel zum Warenkorb hinzu.</b></br>");
         addThreeArticle();
 
         out.println("           </br></br><b>Warenkorb ausgeben.</b>");
@@ -69,15 +48,15 @@ public class TestServlet extends HttpServlet {
         out.println("           </br></br><b>Artikelliste ausgeben nachdem Waren in den Warenkorb gelegt wurden.</b>");
         generateArticleList(out);
 
-        out.println("           </br></br><b>F&aumlllige Summe.</b>");
-        double toPay = shoppingManager.completeShoppingProcess();
+        out.println("           </br></br><b>F&auml;llige Summe.</b>");
+        float toPay = shoppingManager.completeShoppingProcess();
         showSum(out, toPay);
-
-        generateFoot(request, response);
     }
 
-    private void showSum(PrintWriter out, double sum) {
-        out.println("           </br>Bitte bezahlen sie <u>" + sum + "&euro;</u>");
+    private void showSum(PrintWriter out, float sum) {
+        NumberFormat numberFormat = new DecimalFormat("0.00");
+        numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);
+        out.println("           </br>Bitte bezahlen sie <u>" + numberFormat.format(sum) + "&euro;</u>");
     }
 
     private void addThreeArticle() {
@@ -88,7 +67,8 @@ public class TestServlet extends HttpServlet {
 
     private void generateShoppingcartlist(PrintWriter out) {
         List<Article> shoppingcartlist = shoppingManager.getShoppingCart();
-        double sum = shoppingManager.getTotal();
+        NumberFormat numberFormat = new DecimalFormat("0.00");
+        numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);
 
 
         out.println("</br>");
@@ -107,10 +87,10 @@ public class TestServlet extends HttpServlet {
         out.println("                   Menge");
         out.println("               </th>");
         out.println("           </tr>");
-        for(Article article : shoppingcartlist) {
+        for (Article article : shoppingcartlist) {
             out.println("           <tr>");
             out.println("               <td>");
-            out.println("                   "+article.getUuid());
+            out.println("                   " + article.getUuid());
             out.println("               </td>");
             out.println("               <td>");
             out.println("                   " + article.getName());
@@ -122,14 +102,16 @@ public class TestServlet extends HttpServlet {
         }
         out.println("               <tr>");
         out.println("                   <td colspan= '4' style='text-align:right'>");
-        out.println("                        <b><u>Summe: " + sum + "&euro;</u></b>");
+        out.println("                        <b><u>Summe: " + numberFormat.format(shoppingManager.getTotal())
+                    + "&euro;</u></b>");
         out.println("                   </td>");
         out.println("               </tr>");
         out.println("</table>");
     }
 
     private void generateArticleList(PrintWriter out) {
-        List<Article> articlelist = articleManager.getArticleList();
+        ArticleManager articleManager = shoppingManager.getArticleManager();
+        List<Article> articleList = articleManager.getArticleList();
         out.println("</br>");
         out.println("       <table>");
         out.println("           <tr>");
@@ -146,10 +128,10 @@ public class TestServlet extends HttpServlet {
         out.println("                   Menge");
         out.println("               </th>");
         out.println("           </tr>");
-        for(Article a : articlelist) {
+        for (Article a : articleList) {
             out.println("           <tr>");
             out.println("               <td>");
-            out.println("                   "+a.getUuid());
+            out.println("                   " + a.getUuid());
             out.println("               </td>");
             out.println("               <td>");
             out.println("                   " + a.getName());
@@ -165,8 +147,5 @@ public class TestServlet extends HttpServlet {
         out.println("</table>");
 
     }
-
-
-
 }
 

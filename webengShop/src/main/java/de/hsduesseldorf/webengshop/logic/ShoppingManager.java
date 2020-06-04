@@ -12,6 +12,10 @@ public class ShoppingManager {
 
     private ArticleManager articleManager = new ArticleManager();
 
+    public ArticleManager getArticleManager() {
+        return articleManager;
+    }
+
     public List<Article> getShoppingCart() {
         return shoppingCart.getArticles();
     }
@@ -29,7 +33,7 @@ public class ShoppingManager {
         }
     }
 
-    // entfernte  Artikel   müssen   wieder   in   die   Datenbank   eingefügtwerden
+    // entfernte  Artikel   müssen   wieder   in   die   Datenbank   eingefügt werden
     public void deleteArticleFromShoppingCart(String uuid) {
         Article articleToRemove = articleManager.getArticle(uuid);
         if (articleToRemove != null) {
