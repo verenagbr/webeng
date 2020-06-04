@@ -4,6 +4,7 @@
     <title>$Title$</title>
 </head>
 <body>
+
 <h1>Aufgabe 2.1 a)</h1>
 <p>Aktuelles Datum:
     <%=new java.text.SimpleDateFormat().format(new java.util.Date()) %>
@@ -11,8 +12,8 @@
 <p>3 x 5 =
     <%=3 * 5 %>
 </p>
-<h1>Aufgabe 2.1 b)</h1>
 
+<h1>Aufgabe 2.1 b)</h1>
 <%!
     public String calculateCaesarCipher(String codeWort, String verschiebung) {
         StringBuilder result = new StringBuilder();
@@ -56,5 +57,16 @@
 <p>
     <%=calculateCaesarCipher(request.getParameter("codeWort"), request.getParameter("verschiebung"))%>
 </p>
+
+<h1>Aufgabe 2.1 c)</h1>
+
+<p>
+    <%=request.getMethod()%>
+</p>
+
+<p>
+    <%=config.getServletContext().getInitParameter("parameter")%>
+</p>
+
 </body>
 </html>
