@@ -1,11 +1,9 @@
 package de.hsduesseldorf.webengshop.presentation;
 
 import de.hsduesseldorf.webengshop.Article;
-import de.hsduesseldorf.webengshop.ShoppingCart;
 import de.hsduesseldorf.webengshop.logic.ArticleManager;
 import de.hsduesseldorf.webengshop.logic.ShoppingManager;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,8 +14,6 @@ import java.io.PrintWriter;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 @WebServlet(name = "TestServlet", urlPatterns = {"/TestServlet"})
@@ -32,120 +28,62 @@ public class TestServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ArticleManager articleManager = shoppingManager.getArticleManager();
         PrintWriter out = response.getWriter();
 
-        out.println("<h1>Praktikum 4 - Shopsystem mit 3-Schicht-Architektur</h1></br></br></br>");
-
-        out.println("           <b>Artikelliste ausgeben.</b>");
-        generateArticleList(out);
-
-        out.println("           </br></br><b>F&uuml;ge 3 Artikel zum Warenkorb hinzu.</b></br>");
-        addThreeArticle();
-
-        out.println("           </br></br><b>Warenkorb ausgeben.</b>");
-        generateShoppingcartlist(out);
-
-        out.println("           </br></br><b>Artikelliste ausgeben nachdem Waren in den Warenkorb gelegt wurden.</b>");
-        generateArticleList(out);
-
-        out.println("           </br></br><b>F&auml;llige Summe.</b>");
-        float toPay = shoppingManager.completeShoppingProcess();
-        showSum(out, toPay);
+        out.println("<h1>Praktikum 4 - Shopsystem mit 3-Schicht-Architektur</h1>");
+        generateArticleList(out, "Artikelliste", articleManager.getArticleList());
+        addThreeArticle(out);
+        generateShoppingCartList(out);
+        generateArticleList(out,
+                            "Artikelliste nachdem Waren in den Warenkorb gelegt wurden",
+                            articleManager.getArticleList());
+        showSum(out);
     }
 
-    private void showSum(PrintWriter out, float sum) {
-        NumberFormat numberFormat = new DecimalFormat("0.00");
-        numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);
-        out.println("           </br>Bitte bezahlen sie <u>" + numberFormat.format(sum) + "&euro;</u>");
-    }
-
-    private void addThreeArticle() {
-        shoppingManager.addArticleToShoppingCart("183");
-        shoppingManager.addArticleToShoppingCart("953");
-        shoppingManager.addArticleToShoppingCart("984");
-    }
-
-    private void generateShoppingcartlist(PrintWriter out) {
-        List<Article> shoppingcartlist = shoppingManager.getShoppingCart();
-        NumberFormat numberFormat = new DecimalFormat("0.00");
-        numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);
-
-
-        out.println("</br>");
-        out.println("       <table>");
-        out.println("           <tr>");
-        out.println("               <th>");
-        out.println("                   ID");
-        out.println("               </th>");
-        out.println("               <th>");
-        out.println("                   Name");
-        out.println("               </th>");
-        out.println("               <th>");
-        out.println("                   Preis");
-        out.println("               </th>");
-        out.println("               <th>");
-        out.println("                   Menge");
-        out.println("               </th>");
-        out.println("           </tr>");
-        for (Article article : shoppingcartlist) {
-            out.println("           <tr>");
-            out.println("               <td>");
-            out.println("                   " + article.getUuid());
-            out.println("               </td>");
-            out.println("               <td>");
-            out.println("                   " + article.getName());
-            out.println("               </td>");
-            out.println("               <td>");
-            out.println("                   " + article.getPrice() + "&euro;");
-            out.println("               </td>");
-            out.println("           </tr>");
-        }
-        out.println("               <tr>");
-        out.println("                   <td colspan= '4' style='text-align:right'>");
-        out.println("                        <b><u>Summe: " + numberFormat.format(shoppingManager.getTotal())
-                    + "&euro;</u></b>");
-        out.println("                   </td>");
-        out.println("               </tr>");
-        out.println("</table>");
-    }
-
-    private void generateArticleList(PrintWriter out) {
-        ArticleManager articleManager = shoppingManager.getArticleManager();
-        List<Article> articleList = articleManager.getArticleList();
-        out.println("</br>");
-        out.println("       <table>");
-        out.println("           <tr>");
-        out.println("               <th>");
-        out.println("                   ID");
-        out.println("               </th>");
-        out.println("               <th>");
-        out.println("                   Name");
-        out.println("               </th>");
-        out.println("               <th>");
-        out.println("                   Preis");
-        out.println("               </th>");
-        out.println("               <th>");
-        out.println("                   Menge");
-        out.println("               </th>");
-        out.println("           </tr>");
-        for (Article a : articleList) {
-            out.println("           <tr>");
-            out.println("               <td>");
-            out.println("                   " + a.getUuid());
-            out.println("               </td>");
-            out.println("               <td>");
-            out.println("                   " + a.getName());
-            out.println("               </td>");
-            out.println("               <td>");
-            out.println("                   " + a.getPrice());
-            out.println("               </td>");
-            out.println("               <td>");
-            out.println("                   " + a.getStock());
-            out.println("               </td>");
-            out.println("           </tr>");
+    private void generateArticleList(PrintWriter out, final String headline, List<Article> articles) {
+        out.printf("<h2>%s</h2>%n", headline);
+        out.println("<table>");
+        out.println("<tr>");
+        out.println("<th>ID</th>");
+        out.println("<th>Name</th>");
+        out.println("<th>Preis</th>");
+        out.println("<th>Menge</th>");
+        out.println("</tr>");
+        for (Article article : articles) {
+            out.println("<tr>");
+            out.printf("<td>%d</td>%n", article.getUuid());
+            out.printf("<td>%s</td>%n", article.getName());
+            out.printf("<td>%s</td>%n", article.getPrice());
+            out.printf("<td>%d</td>%n", article.getStock());
+            out.println("</tr>");
         }
         out.println("</table>");
 
+    }
+
+    private void addThreeArticle(final PrintWriter out) {
+        out.println("<h2>F&uuml;ge 3 Artikel zum Warenkorb hinzu</h2>");
+        shoppingManager.addArticleToShoppingCart(0);
+        shoppingManager.addArticleToShoppingCart(1);
+        shoppingManager.addArticleToShoppingCart(3);
+    }
+
+    private void generateShoppingCartList(PrintWriter out) {
+        NumberFormat numberFormat = new DecimalFormat("0.00");
+        numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);
+
+        generateArticleList(out, "Warenkorb", shoppingManager.getShoppingCart());
+        out.printf("Summe: %s%n", numberFormat.format(shoppingManager.getTotal()));
+    }
+
+    private void showSum(PrintWriter out) {
+        NumberFormat numberFormat = new DecimalFormat("0.00");
+        numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);
+        String sum = numberFormat.format(shoppingManager.completeShoppingProcess());
+
+        out.println("<h2>F&auml;llige Summe</h2>");
+        out.printf("Bitte bezahlen sie <u>%s&euro;</u>%n", sum);
     }
 }
 

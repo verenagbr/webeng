@@ -3,20 +3,23 @@ package de.hsduesseldorf.webengshop;
 import java.util.UUID;
 
 public class Article {
-    private final String uuid;
+    private int uuid;
     private String name;
     private float price;
     private int stock;
 
-    public Article(final String uuid, final String name, final float price, final int stock) {
-        this.uuid = uuid;
+    public Article(final String name, final float price, final int stock) {
         this.name = name;
         this.price = price;
         this.stock = stock;
     }
 
-    public String getUuid() {
+    public int getUuid() {
         return uuid;
+    }
+
+    public void setUuid(final int uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {

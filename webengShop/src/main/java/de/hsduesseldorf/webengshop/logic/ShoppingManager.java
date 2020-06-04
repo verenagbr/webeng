@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public class ShoppingManager {
 
-    private ShoppingCart shoppingCart = new ShoppingCart();
+    private final ShoppingCart shoppingCart = new ShoppingCart();
 
-    private ArticleManager articleManager = new ArticleManager();
+    private final ArticleManager articleManager = new ArticleManager();
 
     public ArticleManager getArticleManager() {
         return articleManager;
@@ -25,7 +25,7 @@ public class ShoppingManager {
     }
 
     // Artikel im Einkaufswagen sollen aus der Datenbank entfernt werden (stock)
-    public void addArticleToShoppingCart(String uuid) {
+    public void addArticleToShoppingCart(int uuid) {
         Article articleToAdd = articleManager.getArticle(uuid);
         if (articleToAdd != null) {
             shoppingCart.addArticle(articleToAdd);
@@ -34,7 +34,7 @@ public class ShoppingManager {
     }
 
     // entfernte  Artikel   müssen   wieder   in   die   Datenbank   eingefügt werden
-    public void deleteArticleFromShoppingCart(String uuid) {
+    public void deleteArticleFromShoppingCart(int uuid) {
         Article articleToRemove = articleManager.getArticle(uuid);
         if (articleToRemove != null) {
             shoppingCart.removeArticle(articleToRemove);
