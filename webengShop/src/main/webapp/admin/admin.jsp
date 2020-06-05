@@ -16,7 +16,7 @@
         <th>Name</th>
         <th>Preis</th>
         <th>Menge</th>
-        <th>Bearbeiten L&ouml;schen</th>
+        <th>Bearbeiten/L&ouml;schen</th>
     </tr>
     </thead>
     <tbody>

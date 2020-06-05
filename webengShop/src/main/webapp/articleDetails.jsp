@@ -31,8 +31,6 @@
     </tr>
     </tbody>
 </table>
-
-<%-- TODO: Add to Shopping Cart --%>
 <form class="form-inline" method="get" action="./">
     <div class="col-sm-1">
     </div>

@@ -20,6 +20,9 @@ public class FrontController extends HttpServlet {
         // TODO: Not Implemented yet!!!
     }
 
+    /*
+     forwarding depending on action-parameter
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -52,6 +55,9 @@ public class FrontController extends HttpServlet {
         request.getRequestDispatcher(target).include(request, response);
     }
 
+    /*
+    forwarding to admin page
+     */
     private String processAdmin(HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         processAdministrativeActions(request);
@@ -60,6 +66,9 @@ public class FrontController extends HttpServlet {
         return "admin/admin.jsp";
     }
 
+    /*
+    Handling of administrative actions (update, add & delete atricles)
+     */
     private void processAdministrativeActions(final HttpServletRequest request) {
         String uuid = request.getParameter("uuid");
         String name = request.getParameter("name");
@@ -80,17 +89,26 @@ public class FrontController extends HttpServlet {
         }
     }
 
+    /*
+    creates a message (sucess)
+     */
     private void prepareMessage(final HttpServletRequest request, final String type, final String message) {
         request.setAttribute("message", true);
         request.setAttribute("messageType", type);
         request.setAttribute("messageContent", message);
     }
 
+    /*
+    forwarding to article list page
+     */
     private String processArticleList(HttpServletRequest request) {
         request.setAttribute("articleList", articleManager.getArticleList());
         return "articleList.jsp";
     }
 
+    /*
+    forwarding to article details page if article with the given id exists
+     */
     private String processArticleDetails(final HttpServletRequest request,
                                          final HttpServletResponse response) throws IOException {
         String uuidString = request.getParameter("uuid");
@@ -106,6 +124,9 @@ public class FrontController extends HttpServlet {
         return "./";
     }
 
+    /*
+    updating of the shopping cart & forwarding to the (updated) shopping cart page
+     */
     private String processShoppingCart(HttpServletRequest request,
                                        final HttpServletResponse response) throws IOException {
         String uuidParam = request.getParameter("uuid");
@@ -120,6 +141,9 @@ public class FrontController extends HttpServlet {
         return "shoppingCart.jsp";
     }
 
+    /*
+    adding an article to the shopping cart if the given amount is greater than 0
+     */
     private void updateShoppingCart(final HttpServletRequest request,
                                     final HttpServletResponse response,
                                     final int amount,
@@ -136,6 +160,9 @@ public class FrontController extends HttpServlet {
         }
     }
 
+    /*
+    forwarding to the thanks page
+     */
     private String processCheckout() {
         shoppingManager.completeShoppingProcess();
         return "thanks.jsp";
