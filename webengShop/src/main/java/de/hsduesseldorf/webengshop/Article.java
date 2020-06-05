@@ -1,7 +1,5 @@
 package de.hsduesseldorf.webengshop;
 
-import java.util.UUID;
-
 public class Article {
     private int uuid;
     private String name;
@@ -9,6 +7,7 @@ public class Article {
     private int stock;
 
     public Article(final String name, final float price, final int stock) {
+        this.uuid = 0;
         this.name = name;
         this.price = price;
         this.stock = stock;

@@ -26,6 +26,21 @@ public class ArticleManager {
         return articleDAO.get(uuid);
     }
 
+    public void addArticle(final String name, final float price, final int stock) {
+        articleDAO.add(new Article(name, price, stock));
+    }
+
+    public void updateArticle(final int uuid, final String name, final float price, final int stock) {
+        Article article = getArticle(uuid);
+        article.setName(name);
+        article.setPrice(price);
+        article.setStock(stock);
+    }
+
+    public void deleteArticle(int uuid) {
+        articleDAO.delete(getArticle(uuid));
+    }
+
     /**
      * Updates the stock of an Article
      *
@@ -36,10 +51,8 @@ public class ArticleManager {
         if (increaseStock) {
             article.setStock(article.getStock() + 1);
         } else {
-            if (article.getStock() > 1) {
+            if (article.getStock() > 0) {
                 article.setStock(article.getStock() - 1);
-            } else {
-                articleDAO.delete(article);
             }
         }
     }

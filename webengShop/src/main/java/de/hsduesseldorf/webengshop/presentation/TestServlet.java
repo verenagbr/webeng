@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.List;
+import java.util.Collection;
 
 @WebServlet(name = "TestServlet", urlPatterns = {"/TestServlet"})
 public class TestServlet extends HttpServlet {
@@ -41,7 +41,7 @@ public class TestServlet extends HttpServlet {
         showSum(out);
     }
 
-    private void generateArticleList(PrintWriter out, final String headline, List<Article> articles) {
+    private void generateArticleList(PrintWriter out, final String headline, Collection<Article> articles) {
         out.printf("<h2>%s</h2>%n", headline);
         out.println("<table>");
         out.println("<tr>");
@@ -64,16 +64,16 @@ public class TestServlet extends HttpServlet {
 
     private void addThreeArticle(final PrintWriter out) {
         out.println("<h2>F&uuml;ge 3 Artikel zum Warenkorb hinzu</h2>");
-        shoppingManager.addArticleToShoppingCart(0);
-        shoppingManager.addArticleToShoppingCart(1);
-        shoppingManager.addArticleToShoppingCart(3);
+        out.println(shoppingManager.addArticleToShoppingCart(0));
+        out.println(shoppingManager.addArticleToShoppingCart(1));
+        out.println(shoppingManager.addArticleToShoppingCart(3));
     }
 
     private void generateShoppingCartList(PrintWriter out) {
         NumberFormat numberFormat = new DecimalFormat("0.00");
         numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);
 
-        generateArticleList(out, "Warenkorb", shoppingManager.getShoppingCart());
+        generateArticleList(out, "Warenkorb", shoppingManager.getShoppingCart().keySet());
         out.printf("Summe: %s%n", numberFormat.format(shoppingManager.getTotal()));
     }
 

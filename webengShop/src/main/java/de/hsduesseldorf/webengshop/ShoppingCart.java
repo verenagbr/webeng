@@ -1,17 +1,18 @@
 package de.hsduesseldorf.webengshop;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ShoppingCart {
-    private final List<Article> articles = new LinkedList<>();
+    private final Map<Article, Integer> articles = new HashMap<>();
 
-    public List<Article> getArticles() {
+    public Map<Article, Integer> getArticles() {
         return articles;
     }
 
     public void addArticle(Article article) {
-        articles.add(article);
+        articles.compute(article,
+                         (Article key, Integer amount) -> amount != null ? amount + 1 : 1);
     }
 
     public void removeArticle(Article article) {
@@ -29,7 +30,7 @@ public class ShoppingCart {
     public float getTotal() {
         float total = 0f;
 
-        for (final Article article : articles) {
+        for (final Article article : articles.keySet()) {
             total += article.getPrice();
         }
 
